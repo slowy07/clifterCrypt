@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+if [[ -n $(git status -s) ]]; then
+    git diff --minimal HEAD
+    echo "---------"
+    case "$1" in
+    "proto")
+        echo ".pb.go files and .proto files are out sync"
+        echo "*run \"make  gen\" to generate *"
+    ;;
+    "format")
+        echo "C or go file have incorrect formatting"
+        echo "run \"make format\" to fix"
+    ;;
+    *)
+        echo "file have changed in repository"
+    ;;
+    esac
+    echo "---------"
+    git reset HEAD --hard
+    exit 1
+fi
